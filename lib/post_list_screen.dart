@@ -8,17 +8,17 @@ class PostListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scrollController = ScrollController();
+    // final scrollController = ScrollController();
     final postController = Get.put(PostController());
 
     // Attach a scroll listener to the list view
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
-        // User has reached the end of the list, fetch the next 15 items
-        postController.fetchPosts();
-      }
-    });
+    // scrollController.addListener(() {
+    //   if (scrollController.position.pixels ==
+    //       scrollController.position.maxScrollExtent) {
+    //     // User has reached the end of the list, fetch the next 15 items
+    //     // postController.fetchPosts();
+    //   }
+    // });
 
     return Scaffold(
       appBar: AppBar(
@@ -28,7 +28,7 @@ class PostListScreen extends StatelessWidget {
         () => Stack(
           children: [
             ListView.builder(
-              controller: scrollController,
+              //controller: scrollController,
               itemCount: postController.posts.length + 1,
               itemBuilder: (context, index) {
                 if (index == postController.posts.length) {
@@ -36,10 +36,14 @@ class PostListScreen extends StatelessWidget {
                   print(
                       "Index: $index == ${postController.posts.length} postController.post.length ");
                   print("Loading.... for Page = ${postController.page}");
-                  return const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Center(
-                      child: CircularProgressIndicator(),
+                  return Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        postController.loadMorePosts();
+                      },
+                      child: postController.isLoading.value
+                          ? const Center(child: CircularProgressIndicator())
+                          : const Text("Load More"),
                     ),
                   );
                 }

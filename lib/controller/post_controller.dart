@@ -37,4 +37,10 @@ class PostController extends GetxController {
       isLoading(false);
     }
   }
+
+  void loadMorePosts() {
+    if (!isLoading.value) {
+      fetchPosts();
+    }
+  }
 }
